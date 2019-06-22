@@ -8,8 +8,8 @@ import functions as f
 grid_length = 2 ** 6
 in_grid = np.random.randint(2, size=(grid_length, grid_length), dtype=np.int8)
 out_grid = in_grid.copy()
-n_sweeps = 10 ** 2
-n_frames = 10 ** 2
+n_sweeps = 10 ** 3
+n_frames = 10 ** 3
 interval = np.max([1, n_sweeps // n_frames])
 
 make_movie = True

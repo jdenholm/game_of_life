@@ -95,15 +95,43 @@ def make_movie(solutions, file_name, fps):
     ax.set_xticks([])
     ax.set_yticks([])
 
+    print("Movie progress")
+
     with writer.saving(fig, file_name + '.mp4', dpi=500):
 
         for count in range(solutions.shape[2]):
 
-            print("Movie progress = %i / %i" % (count + 1, solutions.shape[2]))
+            printProgressBar(count + 1, solutions.shape[2], decimals=3)
             a = ax.imshow(solutions[:, :, count], vmin=0, vmax=1,
                           cmap="inferno_r")
             ax.set_title("t = %.3e" % count, fontsize=10)
 
             writer.grab_frame()
             a.remove()
+    return()
+
+
+def printProgressBar(iteration, total, prefix=' ', suffix=' ', decimals=1,
+                     length=50, fill=''):
+    """Call in a loop to create terminal progress bar.
+
+    @params:
+        iteration   - Required  : current iteration (Int)
+        total       - Required  : total iterations (Int)
+        prefix      - Optional  : prefix string (Str)
+        suffix      - Optional  : suffix string (Str)
+        decimals    - Optional  : positive number of decimals (Int)
+        length      - Optional  : character length of bar (Int)
+        fill        - Optional  : bar fill character (Str)
+
+    "https://stackoverflow.com/questions/3173320/text-progress-bar-in-the-console"
+    """
+    percent = ("{0:." + str(decimals) + "f}").format(100 * (iteration /
+                                                            float(total)))
+    filledLength = int(length * iteration // total)
+    bar = fill * filledLength + '-' * (length - filledLength)
+    print('\r%s |%s| %s%% %s' % (prefix, bar, percent, suffix), end='\r')
+    # Print New Line on Complete
+    if iteration == total:
+        print()
     return()
