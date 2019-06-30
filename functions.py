@@ -25,17 +25,16 @@ def update_neighbours(neighbours, i, j, grid_length):
     neighbours[7, 1] = j - 1
 
     neighbours %= grid_length
-    return()
 
 
 @jit(int32(int8[:, :], int32[:, :]), nopython=True)
 def count_neighbours(in_grid, neighbours):
     """Count the number of live neighbours of the site."""
     count = np.int32(0)
-    for n in range(neighbours.shape[0]):
-        if in_grid[neighbours[n, 0], neighbours[n, 1]] == 1:
+    for n_count in range(neighbours.shape[0]):
+        if in_grid[neighbours[n_count, 0], neighbours[n_count, 1]] == 1:
             count += 1
-    return(count)
+    return count
 
 
 @jit((int32, int32[:, :], int8[:, :], int8[:, :]), nopython=True)
@@ -51,14 +50,13 @@ def grid_sweep(grid_length, neighbours, in_grid, out_grid):
 
                 if n_count < 2:
                     out_grid[i, j] = 0
-                if n_count == 2 or n_count == 3:
+                if n_count in (2, 3):
                     out_grid[i, j] = 1
                 if n_count > 3:
                     out_grid[i, j] = 0
 
             if in_grid[i, j] == 0 and n_count == 3:
                 out_grid[i, j] = 1
-    return()
 
 
 @jit((int32, int32, int32, int32[:, :], int8[:, :], int8[:, :], int8[:, :, :]),
@@ -68,7 +66,7 @@ def game_of_life(n_frames, interval, grid_length, neighbours, in_grid,
     """Simulate the game of life."""
     for sweeps in range(n_frames):
 
-        for i in range(interval):
+        for _ in range(interval):
 
             grid_sweep(grid_length, neighbours, in_grid, out_grid)
 
@@ -83,17 +81,17 @@ def make_movie(solutions, file_name, fps):
     import matplotlib.animation as manimation
     plt.rc('text', usetex=True)
     plt.rc('font', family='serif')
-    FFMpegWriter = manimation.writers['ffmpeg']
+    ffmpeg_writer = manimation.writers['ffmpeg']
     metadata = dict(title='Game of Life',
                     artist='James Denholm',
                     comment='Movie support!')
-    writer = FFMpegWriter(fps=fps, metadata=metadata)
+    writer = ffmpeg_writer(fps=fps, metadata=metadata)
 
-    fig, ax = plt.subplots(1, figsize=(2, 2))
+    fig, axis = plt.subplots(1, figsize=(2, 2))
     fig.subplots_adjust(left=0.05, right=0.95, bottom=0.03, top=0.88)
 
-    ax.set_xticks([])
-    ax.set_yticks([])
+    axis.set_xticks([])
+    axis.set_yticks([])
 
     print("Movie progress")
 
@@ -101,18 +99,18 @@ def make_movie(solutions, file_name, fps):
 
         for count in range(solutions.shape[2]):
 
-            printProgressBar(count + 1, solutions.shape[2], decimals=3)
-            a = ax.imshow(solutions[:, :, count], vmin=0, vmax=1,
-                          cmap="inferno_r")
-            ax.set_title("t = %.3e" % count, fontsize=10)
+            progress_bar(count + 1, solutions.shape[2], decimals=3)
+            the_plot = axis.imshow(solutions[:, :, count], vmin=0, vmax=1,
+                                   cmap="inferno_r")
+            axis.set_title("t = %.3e" % count, fontsize=10)
 
             writer.grab_frame()
-            a.remove()
+            the_plot.remove()
     return()
 
 
-def printProgressBar(iteration, total, prefix=' ', suffix=' ', decimals=1,
-                     length=50, fill=''):
+def progress_bar(iteration, total, prefix=' ', suffix=' ', decimals=1,
+                 length=50, fill=''):
     """Call in a loop to create terminal progress bar.
 
     @params:
@@ -128,9 +126,9 @@ def printProgressBar(iteration, total, prefix=' ', suffix=' ', decimals=1,
     """
     percent = ("{0:." + str(decimals) + "f}").format(100 * (iteration /
                                                             float(total)))
-    filledLength = int(length * iteration // total)
-    bar = fill * filledLength + '-' * (length - filledLength)
-    print('\r%s |%s| %s%% %s' % (prefix, bar, percent, suffix), end='\r')
+    filled_length = int(length * iteration // total)
+    the_bar = fill * filled_length + '-' * (length - filled_length)
+    print('\r%s |%s| %s%% %s' % (prefix, the_bar, percent, suffix), end='\r')
     # Print New Line on Complete
     if iteration == total:
         print()
