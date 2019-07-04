@@ -101,34 +101,19 @@ def make_movie(solutions, file_name, fps):
 
         for count in range(solutions.shape[2]):
 
-<<<<<<< HEAD
-            print_progress(count + 1, solutions.shape[2], decimals=3)
-            heat_map = axis.imshow(solutions[:, :, count], vmin=0, vmax=1,
-=======
             progress_bar(count + 1, solutions.shape[2], decimals=3)
-            the_plot = axis.imshow(solutions[:, :, count], vmin=0, vmax=1,
->>>>>>> 501a3f30916a7a33c0706efc3f715bc98b3066e3
-                                   cmap="inferno_r")
+            heat_map = axis.imshow(solutions[:, :, count], vmin=0, vmax=1)
+            progress_bar(count + 1, solutions.shape[2], decimals=3)
             axis.set_title("t = %.3e" % count, fontsize=10)
 
             writer.grab_frame()
-<<<<<<< HEAD
             heat_map.remove()
-    return()
-
-
-def print_progress(iteration, total, prefix=' ', suffix=' ', decimals=1,
-                   length=50, fill=''):
-=======
-            the_plot.remove()
     return()
 
 
 def progress_bar(iteration, total, prefix=' ', suffix=' ', decimals=1,
                  length=50, fill=''):
->>>>>>> 501a3f30916a7a33c0706efc3f715bc98b3066e3
     """Call in a loop to create terminal progress bar.
-
     @params:
         iteration   - Required  : current iteration (Int)
         total       - Required  : total iterations (Int)
@@ -137,19 +122,15 @@ def progress_bar(iteration, total, prefix=' ', suffix=' ', decimals=1,
         decimals    - Optional  : positive number of decimals (Int)
         length      - Optional  : character length of bar (Int)
         fill        - Optional  : bar fill character (Str)
-
     "https://stackoverflow.com/questions/3173320/text-progress-bar-in-the-console"
     """
     percent = ("{0:." + str(decimals) + "f}").format(100 * (iteration /
                                                             float(total)))
     filled_length = int(length * iteration // total)
-<<<<<<< HEAD
     prog_bar = fill * filled_length + '-' * (length - filled_length)
     print('\r%s |%s| %s%% %s' % (prefix, prog_bar, percent, suffix), end='\r')
-=======
     the_bar = fill * filled_length + '-' * (length - filled_length)
     print('\r%s |%s| %s%% %s' % (prefix, the_bar, percent, suffix), end='\r')
->>>>>>> 501a3f30916a7a33c0706efc3f715bc98b3066e3
     # Print New Line on Complete
     if iteration == total:
         print()
