@@ -10,7 +10,6 @@ def main():
     grid_length = 2 ** 6
     in_grid = np.random.randint(2, size=(grid_length, grid_length),
                                 dtype=np.int8)
-    out_grid = in_grid.copy()
     n_sweeps = 10 ** 3
     n_frames = 10 ** 3
     interval = np.max([1, n_sweeps // n_frames])
@@ -22,14 +21,11 @@ def main():
 
     solutions = np.zeros((grid_length, grid_length, n_frames + 1),
                          dtype=np.int8)
-    solutions[:, :, 0] = out_grid[:, :]
-
     neighbours = np.zeros((8, 2), dtype=np.int32)
 
     tic = time.time()
 
-    f.game_of_life(n_frames, interval, grid_length, neighbours, in_grid,
-                   out_grid, solutions)
+    f.game_of_life(n_frames, interval, neighbours, in_grid, solutions)
 
     toc = time.time()
 
