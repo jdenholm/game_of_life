@@ -9,8 +9,8 @@ def main(grid_length, n_sweeps, n_frames, make_movie, save_data):
     """Run the game of life."""
     in_grid = np.random.randint(2, size=(grid_length, grid_length),
                                 dtype=np.int8)
-    n_sweeps = 10 ** 3
-    n_frames = 10 ** 3
+    n_sweeps = 10 ** 2
+    n_frames = 10 ** 2
     interval = np.max([1, n_sweeps // n_frames])
 
     fps = 10
