@@ -102,8 +102,8 @@ def make_movie(solutions, file_name, fps):
         for count in range(solutions.shape[2]):
 
             progress_bar(count + 1, solutions.shape[2], decimals=3)
-            heat_map = axis.imshow(solutions[:, :, count], vmin=0, vmax=1)
-            progress_bar(count + 1, solutions.shape[2], decimals=3)
+            heat_map = axis.imshow(solutions[:, :, count], vmin=0, vmax=1,
+                                   cmap="YlGnBu")
             axis.set_title("t = %.3e" % count, fontsize=10)
 
             writer.grab_frame()
